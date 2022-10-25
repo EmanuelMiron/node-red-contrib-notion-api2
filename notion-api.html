@@ -1,0 +1,13 @@
+<script type="text/javascript">
+    RED.nodes.registerType('notion-api-test', {
+        category: 'Notion',
+        defaults: {
+            name: {value: ""}
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function(){
+            return this.name || "Notion API Test"
+        }
+    });  
+</script>
