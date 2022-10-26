@@ -1,3 +1,34 @@
+
+<script type="text/html" data-template-name="notion-api-test">
+    <div class="form-row">
+        <label for="node-input-name">Name</label>
+        <input type="text" id="node-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-database-action"><i class="fa fa-list"></i> Action</label>
+        <select id="node-input-database-action" style="width:270px !important">
+            <option value="query">Query</option>
+            <option value="insert">Insert</option>
+            <option value="update">Update</option>
+        </select>
+    </div>
+
+    <div class="form-row" id="query-details">
+        <label for="node-input-test1">Query</label>
+        <input type="text" id="node-input-test1" />
+    </div>
+
+    <div class="form-row" id="insert-details">
+        <label for="node-input-test2">Insert</label>
+        <input type="text" id="node-input-test2" />
+    </div>
+
+    <div class="form-row" id="update-details">
+        <label for="node-input-test3">Update</label>
+        <input type="text" id="node-input-test3" />
+    </div>
+</script>
+
 <script type="text/javascript">
     RED.nodes.registerType('notion-api-test', {
         category: 'Notion',
@@ -8,13 +39,27 @@
         outputs: 1,
         label: function(){
             return this.name || "Notion API Test"
+        },
+        oneditprepare: function(){
+            $("#node-input-database-action").on("change",function() {
+                switch (this.value) {
+                    case "insert":
+                        $("#query-details").hide();
+                        $("#insert-details").show();
+                        $("#update-details").hide();
+                        break;
+                    case "update":
+                        $("#query-details").hide();
+                        $("#insert-details").hide();
+                        $("#update-details").show();
+                        break;
+                    default:
+                        $("#query-details").show();
+                        $("#insert-details").hide();
+                        $("#update-details").hide();
+                        break;
+                }
+            }).trigger("change");
         }
     });
-</script>
-
-<script type="text/html" data-template-name="notion-api-test">
-    <div class="form-row">
-        <label for="node-input-name">Name</label>
-        <input type="text" id="node-input-name" />
-    </div>
 </script>
