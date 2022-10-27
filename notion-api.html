@@ -1,5 +1,5 @@
 
-<script type="text/html" data-template-name="notion-api-test">
+<script type="text/html" data-template-name="notion-api-database">
     <div class="form-row">
         <label for="node-input-name">Name</label>
         <input type="text" id="node-input-name" />
@@ -14,8 +14,21 @@
     </div>
 
     <div class="form-row" id="query-details">
-        <label for="node-input-test1">Query</label>
-        <input type="text" id="node-input-test1" />
+        <div class="form-row">
+            <label for="node-input-database-id">Database ID</label>
+            <input type="text" id="node-input-database-id" />
+            <input type="hidden" id="node-input-database-idType">
+        </div>
+        <div class="form-row">
+            <label for="node-input-database-filter">Filter</label>
+            <input type="text" id="node-input-database-filter" />
+            <input type="hidden" id="node-input-database-filterType">
+        </div>
+        <div class="form-row">
+            <label for="node-input-database-sort">Sorts</label>
+            <input type="text" id="node-input-database-sort" />
+            <input type="hidden" id="node-input-database-sortType">
+        </div>
     </div>
 
     <div class="form-row" id="insert-details">
@@ -30,17 +43,52 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('notion-api-test', {
+    RED.nodes.registerType('notion-api-database', {
         category: 'Notion',
         defaults: {
-            name: {value: ""}
+            name: {value: ""},
+            action: {value: "query", required: true},
+            "database-id": {value: "", validate: RED.validators.typedInput('database-idType')},
+            "database-idType": {value: "str"},
+            "database-filter": {value: "{}", validate: RED.validators.typedInput('database-filterType')},
+            "database-filterType": {value: "json"},
+            "database-sort": {value: "[]", validate: RED.validators.typedInput('database-sortType')},
+            "database-sortType": {value: "json"}
         },
         inputs: 1,
         outputs: 1,
         label: function(){
-            return this.name || "Notion API Test"
+            return this.name || "Notion DB"
         },
         oneditprepare: function(){
+
+            $("#node-input-database-id").typedInput({
+                types: ["str", "msg"],
+                typeField: "#node-input-database-idType"
+            });
+
+            $("#node-input-database-filter").typedInput({
+                types: ["json", "msg"],
+                typeField: "#node-input-database-filterType"
+            });
+
+            $("#node-input-database-sort").typedInput({
+                types: ["json", "msg"],
+                typeField: "#node-input-database-sortType"
+            });
+
+            switch (this.action) {
+                case "insert":
+                $("#node-input-database-action").val("insert")
+                    break;
+                case "update":
+                $("#node-input-database-action").val("update")
+                    break;
+                default:
+                $("#node-input-database-action").val("query")
+                    break;
+            }
+
             $("#node-input-database-action").on("change",function() {
                 switch (this.value) {
                     case "insert":
@@ -60,6 +108,9 @@
                         break;
                 }
             }).trigger("change");
+        },
+        oneditsave: function() {
+            this.action = $("#node-input-database-action").val();
         }
     });
 </script>
