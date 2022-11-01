@@ -98,8 +98,24 @@ module.exports = function(RED){
         node.on('input', function(msg, send, done) {
 
             const query = async () => {
-                const page_id = RED.util.evaluateNodeProperty(config["page-id"], config["page-idType"], config, msg);;
+                const page_id = RED.util.evaluateNodeProperty(config["page-id"], config["page-idType"], config, msg);
                 notion.pages.retrieve({ page_id })
+                .then(res => {
+                    msg.payload = res;
+                    send(msg);
+                }).catch(err => {
+                    msg.payload = err;
+                    node.error(msg);
+                });
+            }
+
+            const create = async () => {
+                const properties = RED.util.evaluateNodeProperty(config["page-props"], config["page-propsType"], config, msg);
+                const parent = {
+                    "type": "page_id",
+                    "page_id": RED.util.evaluateNodeProperty(config["page-id"], config["page-idType"], config, msg)
+                }
+                await notion.pages.create({ parent, properties})
                 .then(res => {
                     msg.payload = res;
                     send(msg);

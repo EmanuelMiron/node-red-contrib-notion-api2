@@ -17,7 +17,7 @@
 > This Node should handle all Page requests and should have the following functionalities:
 
     1. Query a Page ✅
-    2. Create a Page
+    2. Create a Page ✅
     3. Update a Page
 
 ### 3. Block Node

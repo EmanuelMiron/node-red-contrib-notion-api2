@@ -77,16 +77,20 @@
         </select>
     </div>
 
-    <div class="form-row" id="query-details">
-        <div class="form-row">
-            <label for="node-input-page-id">Page ID</label>
-            <input type="text" id="node-input-page-id" />
-            <input type="hidden" id="node-input-page-idType">
-        </div>
+    <div class="form-row">
+        <label for="node-input-page-id">Page ID</label>
+        <input type="text" id="node-input-page-id" />
+        <input type="hidden" id="node-input-page-idType">
     </div>
 
-    <div class="form-row" id="create-details">
+    <div class="form-row" id="query-details"></div>
 
+    <div class="form-row" id="create-details">
+        <div class="form-row">
+            <label for="node-input-page-props">Properties</label>
+            <input type="text" id="node-input-page-props" />
+            <input type="hidden" id="node-input-page-propsType">
+        </div>
     </div>
 
     <div class="form-row" id="update-details">
@@ -220,9 +224,11 @@
         category: 'Notion',
         defaults: {
             name: {value: ""},
-            "page-action": {value: "query", required: true},
+            action: {value: "query", required: true},
             "page-id": {value: "", validate: RED.validators.typedInput('page-idType')},
             "page-idType": {value: "str"},
+            "page-props": {value: "{}", validate: RED.validators.typedInput('page-propsType')},
+            "page-propsType": {value: "json"}
         },
         inputs: 1,
         outputs: 1,
@@ -238,6 +244,13 @@
             $("#node-input-page-id").typedInput({
                 types: ["str", "msg"],
                 typeField: "#node-input-page-idType"
+            });
+
+            // Create
+
+            $("#node-input-page-props").typedInput({
+                types: ["json", "msg"],
+                typeField: "#node-input-page-propsType"
             });
 
             switch (this.action) {
