@@ -41,8 +41,16 @@
     </div>
 
     <div class="form-row" id="update-details">
-        <label for="node-input-test3">Update</label>
-        <input type="text" id="node-input-test3" />
+        <div class="form-row">
+            <label for="node-input-database-update-id">Item ID</label>
+            <input type="text" id="node-input-database-update-id" />
+            <input type="hidden" id="node-input-database-update-idType" />
+        </div>
+        <div class="form-row">
+            <label for="node-input-database-update-props">New Properties</label>
+            <input type="text" id="node-input-database-update-props" />
+            <input type="hidden" id="node-input-database-update-propsType">
+        </div>
     </div>
 </script>
 
@@ -59,7 +67,11 @@
             "database-sort": {value: "[]", validate: RED.validators.typedInput('database-sortType')},
             "database-sortType": {value: "json"},
             "database-props": {value: "{}", validate: RED.validators.typedInput('database-propsType')},
-            "database-propsType": {value: "json"}
+            "database-propsType": {value: "json"},
+            "database-update-id": {value: "", validate: RED.validators.typedInput('database-update-idType'), required: true},
+            "database-update-idType": {value: "str"},
+            "database-update-props": {value: "{}", validate: RED.validators.typedInput('database-propsType')},
+            "database-update-propsType": {value: "json"}
         },
         inputs: 1,
         outputs: 1,
@@ -92,6 +104,18 @@
             $("#node-input-database-props").typedInput({
                 types: ["json", "msg"],
                 typeField: "#node-input-database-propsType"
+            });
+
+            // Update
+
+            $("#node-input-database-update-id").typedInput({
+                types: ["str", "msg"],
+                typeField: "#node-input-database-update-idType"
+            });
+
+            $("#node-input-database-update-props").typedInput({
+                types: ["json", "msg"],
+                typeField: "#node-input-database-update-propsType"
             });
 
             switch (this.action) {

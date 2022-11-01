@@ -33,9 +33,27 @@ module.exports = function(RED){
                     "type": "database_id",
                     "database_id": RED.util.evaluateNodeProperty(config["database-id"], config["database-idType"], config, msg)
                 }
-                const properties = RED.util.evaluateNodeProperty(config["database-props"], config["database-propsType"], config, msg);
+                var properties = RED.util.evaluateNodeProperty(config["database-props"], config["database-propsType"], config, msg);
+
+                properties = Object.keys(properties).length === 0 ? undefined : properties
 
                 await notion.pages.create({parent, properties})
+                .then(res => {
+                    msg.payload = res;
+                    send(msg);
+                }).catch(err => {
+                    msg.payload = err;
+                    node.error(msg);
+                });
+            }
+
+            const update = async () => {
+                const page_id = RED.util.evaluateNodeProperty(config["database-update-id"], config["database-update-idType"], config, msg);
+                var properties = RED.util.evaluateNodeProperty(config["database-update-props"], config["database-update-propsType"], config, msg);
+
+                properties = Object.keys(properties).length === 0 ? undefined : properties
+
+                await notion.pages.update({ page_id, properties })
                 .then(res => {
                     msg.payload = res;
                     send(msg);
@@ -50,7 +68,7 @@ module.exports = function(RED){
                     insert();
                     break;
                 case "update":
-                    node.warn("This feature is not implemented yet. :(");
+                    update();
                     break;
                 default:
                     query();
