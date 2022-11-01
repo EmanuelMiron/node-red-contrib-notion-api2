@@ -11,8 +11,12 @@ module.exports = function(RED){
 
             const query = async () => {
                 const database_id = RED.util.evaluateNodeProperty(config["database-id"], config["database-idType"], config, msg);
-                const filter = RED.util.evaluateNodeProperty(config["database-filter"], config["database-filterType"], config, msg);
-                const sort = RED.util.evaluateNodeProperty(config["database-sort"], config["database-sortType"], config, msg);
+                var filter = RED.util.evaluateNodeProperty(config["database-filter"], config["database-filterType"], config, msg);
+                var sort = RED.util.evaluateNodeProperty(config["database-sort"], config["database-sortType"], config, msg);
+
+                // Check filter and sort if empty
+                filter = Object.keys(filter).length === 0 ? undefined : filter
+                sort = Object.keys(sort).length === 0 ? undefined : sort
 
                 await notion.databases.query({ database_id, filter, sort})
                 .then(res => {
