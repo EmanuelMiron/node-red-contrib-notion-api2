@@ -28,9 +28,26 @@ module.exports = function(RED){
                 });
             }
 
+            const insert = async () => {
+                const parent = {
+                    "type": "database_id",
+                    "database_id": RED.util.evaluateNodeProperty(config["database-id"], config["database-idType"], config, msg)
+                }
+                const properties = RED.util.evaluateNodeProperty(config["database-props"], config["database-propsType"], config, msg);
+
+                await notion.pages.create({parent, properties})
+                .then(res => {
+                    msg.payload = res;
+                    send(msg);
+                }).catch(err => {
+                    msg.payload = err;
+                    node.error(msg);
+                });
+            }
+
             switch (config.action) {
                 case "insert":
-                    node.warn("This feature is not implemented yet. :(");
+                    insert();
                     break;
                 case "update":
                     node.warn("This feature is not implemented yet. :(");

@@ -33,8 +33,11 @@
     </div>
 
     <div class="form-row" id="insert-details">
-        <label for="node-input-test2">Insert</label>
-        <input type="text" id="node-input-test2" />
+        <div class="form-row">
+            <label for="node-input-database-props">Properties</label>
+            <input type="text" id="node-input-database-props" />
+            <input type="hidden" id="node-input-database-propsType">
+        </div>
     </div>
 
     <div class="form-row" id="update-details">
@@ -54,7 +57,9 @@
             "database-filter": {value: "{}", validate: RED.validators.typedInput('database-filterType')},
             "database-filterType": {value: "json"},
             "database-sort": {value: "[]", validate: RED.validators.typedInput('database-sortType')},
-            "database-sortType": {value: "json"}
+            "database-sortType": {value: "json"},
+            "database-props": {value: "{}", validate: RED.validators.typedInput('database-propsType')},
+            "database-propsType": {value: "json"}
         },
         inputs: 1,
         outputs: 1,
@@ -64,6 +69,8 @@
         color:"#87A980",
         icon: "font-awesome/fa-database",
         oneditprepare: function(){
+
+            // Query
 
             $("#node-input-database-id").typedInput({
                 types: ["str", "msg"],
@@ -78,6 +85,13 @@
             $("#node-input-database-sort").typedInput({
                 types: ["json", "msg"],
                 typeField: "#node-input-database-sortType"
+            });
+
+            // Insert
+
+            $("#node-input-database-props").typedInput({
+                types: ["json", "msg"],
+                typeField: "#node-input-database-propsType"
             });
 
             switch (this.action) {
