@@ -125,6 +125,19 @@ module.exports = function(RED){
                 });
             }
 
+            const update = async  () => {
+                const page_id = RED.util.evaluateNodeProperty(config["page-id"], config["page-idType"], config, msg);
+                const properties = RED.util.evaluateNodeProperty(config["page-props"], config["page-propsType"], config, msg);
+                await notion.pages.update({ page_id, properties })
+                .then(res => {
+                    msg.payload = res;
+                    send(msg);
+                }).catch(err => {
+                    msg.payload = err;
+                    node.error(msg);
+                });
+            }
+
             switch (config.action) {
                 case "create":
                     create();

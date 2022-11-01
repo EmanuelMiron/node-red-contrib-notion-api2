@@ -18,7 +18,7 @@
 
     1. Query a Page ✅
     2. Create a Page ✅
-    3. Update a Page
+    3. Update a Page ✅
 
 ### 3. Block Node
 

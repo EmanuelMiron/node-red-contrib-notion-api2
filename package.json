@@ -5,7 +5,7 @@
             "notion": "notion-api.js"
         }
     },
-    "version": "0.1.3",
+    "version": "0.2.0",
     "description": "A Node-Red Node which helps you use the Notion API without writing any code.",
     "repository": {
         "type": "git",

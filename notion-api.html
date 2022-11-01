@@ -83,17 +83,13 @@
         <input type="hidden" id="node-input-page-idType">
     </div>
 
-    <div class="form-row" id="query-details"></div>
-
-    <div class="form-row" id="create-details">
+    <div class="form-row" id="details">
         <div class="form-row">
             <label for="node-input-page-props">Properties</label>
             <input type="text" id="node-input-page-props" />
             <input type="hidden" id="node-input-page-propsType">
         </div>
     </div>
-
-    <div class="form-row" id="update-details">
 
     </div>
 </script>
@@ -268,19 +264,13 @@
             $("#node-input-page-action").on("change",function() {
                 switch (this.value) {
                     case "create":
-                        $("#query-details").hide();
-                        $("#create-details").show();
-                        $("#update-details").hide();
+                        $("#details").show();
                         break;
                     case "update":
-                        $("#query-details").hide();
-                        $("#create-details").hide();
-                        $("#update-details").show();
+                        $("#details").show();
                         break;
                     default:
-                        $("#query-details").show();
-                        $("#create-details").hide();
-                        $("#update-details").hide();
+                        $("#details").hide();
                         break;
                 }
             }).trigger("change");
