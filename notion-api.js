@@ -63,12 +63,27 @@ module.exports = function(RED){
                 });
             }
 
+            const deleteItem = async () => {
+                const block_id = RED.util.evaluateNodeProperty(config["database-delete-id"], config["database-delete-idType"], config, msg);
+                await notion.blocks.delete({block_id})
+                .then(res => {
+                    msg.payload = res;
+                    send(msg);
+                }).catch(err => {
+                    msg.payload = err;
+                    node.error(msg);
+                });
+            }
+
             switch (config.action) {
                 case "insert":
                     insert();
                     break;
                 case "update":
                     update();
+                    break;
+                case "delete":
+                    deleteItem();
                     break;
                 default:
                     query();

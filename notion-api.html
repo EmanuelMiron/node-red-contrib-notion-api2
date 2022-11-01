@@ -10,6 +10,7 @@
             <option value="query">Query</option>
             <option value="insert">Insert</option>
             <option value="update">Update</option>
+            <option value="delete">Delete</option>
         </select>
     </div>
 
@@ -52,6 +53,14 @@
             <input type="hidden" id="node-input-database-update-propsType">
         </div>
     </div>
+
+    <div class="form-row" id="delete-details">
+        <div class="form-row">
+            <label for="node-input-database-delete-id">Item ID</label>
+            <input type="text" id="node-input-database-delete-id" />
+            <input type="hidden" id="node-input-database-delete-idType" />
+        </div>
+    </div>
 </script>
 
 <script type="text/javascript">
@@ -70,8 +79,10 @@
             "database-propsType": {value: "json"},
             "database-update-id": {value: "", validate: RED.validators.typedInput('database-update-idType'), required: true},
             "database-update-idType": {value: "str"},
-            "database-update-props": {value: "{}", validate: RED.validators.typedInput('database-propsType')},
-            "database-update-propsType": {value: "json"}
+            "database-update-props": {value: "{}", validate: RED.validators.typedInput('database-update-propsType')},
+            "database-update-propsType": {value: "json"},
+            "database-delete-id": {value: "", validate: RED.validators.typedInput('database-delete-idType'), required: true},
+            "database-delete-idType": {value: "str"}
         },
         inputs: 1,
         outputs: 1,
@@ -118,15 +129,25 @@
                 typeField: "#node-input-database-update-propsType"
             });
 
+            // Delete
+
+            $("#node-input-database-delete-id").typedInput({
+                types: ["str", "msg"],
+                typeField: "#node-input-database-delete-idType"
+            });
+
             switch (this.action) {
                 case "insert":
                 $("#node-input-database-action").val("insert")
                     break;
                 case "update":
-                $("#node-input-database-action").val("update")
+                    $("#node-input-database-action").val("update")
+                    break;
+                case "delete":
+                    $("#node-input-database-action").val("delete")
                     break;
                 default:
-                $("#node-input-database-action").val("query")
+                    $("#node-input-database-action").val("query")
                     break;
             }
 
@@ -136,16 +157,25 @@
                         $("#query-details").hide();
                         $("#insert-details").show();
                         $("#update-details").hide();
+                        $("#delete-details").hide();
                         break;
                     case "update":
                         $("#query-details").hide();
                         $("#insert-details").hide();
                         $("#update-details").show();
+                        $("#delete-details").hide();
+                        break;
+                    case "delete":
+                        $("#query-details").hide();
+                        $("#insert-details").hide();
+                        $("#update-details").hide();
+                        $("#delete-details").show();
                         break;
                     default:
                         $("#query-details").show();
                         $("#insert-details").hide();
                         $("#update-details").hide();
+                        $("#delete-details").hide();
                         break;
                 }
             }).trigger("change");
