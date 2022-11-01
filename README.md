@@ -6,10 +6,10 @@
 
 >This Node should handle all database related requests and should have the following functionalities:
 
-    1. Query a DB
-        1.1 This should include Filtering and Sorting the results
-    2. Insert new Item in the DB
-    3. Update DB Item
+    1. Query a DB ✅
+        1.1 This should include Filtering and Sorting the results ✅
+    2. Insert new Item in the DB ✅
+    3. Update DB Item ✅
     4. Delete DB Item
 
 ### 2. Page Node
