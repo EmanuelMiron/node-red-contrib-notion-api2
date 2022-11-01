@@ -92,5 +92,37 @@ module.exports = function(RED){
         })
     }
 
-    RED.nodes.registerType("notion-api-database", DataBase);
+    function Page (config) {
+        RED.nodes.createNode(this, config);
+        const node = this;
+        node.on('input', function(msg, send, done) {
+
+            const query = async () => {
+                const page_id = RED.util.evaluateNodeProperty(config["page-id"], config["page-idType"], config, msg);;
+                notion.pages.retrieve({ page_id })
+                .then(res => {
+                    msg.payload = res;
+                    send(msg);
+                }).catch(err => {
+                    msg.payload = err;
+                    node.error(msg);
+                });
+            }
+
+            switch (config.action) {
+                case "create":
+                    create();
+                    break;
+                case "update":
+                    update();
+                    break;
+                default:
+                    query();
+                    break;
+            }
+        });
+    }
+
+    RED.nodes.registerType("Notion Database", DataBase);
+    RED.nodes.registerType("Notion Page", Page);
 }

@@ -1,5 +1,5 @@
 
-<script type="text/html" data-template-name="notion-api-database">
+<script type="text/html" data-template-name="Notion Database">
     <div class="form-row">
         <label for="node-input-name">Name</label>
         <input type="text" id="node-input-name" />
@@ -63,8 +63,39 @@
     </div>
 </script>
 
+<script type="text/html" data-template-name="Notion Page">
+    <div class="form-row">
+        <label for="node-input-name">Name</label>
+        <input type="text" id="node-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-page-action"><i class="fa fa-list"></i> Action</label>
+        <select id="node-input-page-action" style="width:270px !important">
+            <option value="query">Query</option>
+            <option value="create">Create</option>
+            <option value="update">Update</option>
+        </select>
+    </div>
+
+    <div class="form-row" id="query-details">
+        <div class="form-row">
+            <label for="node-input-page-id">Page ID</label>
+            <input type="text" id="node-input-page-id" />
+            <input type="hidden" id="node-input-page-idType">
+        </div>
+    </div>
+
+    <div class="form-row" id="create-details">
+
+    </div>
+
+    <div class="form-row" id="update-details">
+
+    </div>
+</script>
+
 <script type="text/javascript">
-    RED.nodes.registerType('notion-api-database', {
+    RED.nodes.registerType('Notion Database', {
         category: 'Notion',
         defaults: {
             name: {value: ""},
@@ -182,6 +213,67 @@
         },
         oneditsave: function() {
             this.action = $("#node-input-database-action").val();
+        }
+    });
+
+    RED.nodes.registerType('Notion Page', {
+        category: 'Notion',
+        defaults: {
+            name: {value: ""},
+            "page-action": {value: "query", required: true},
+            "page-id": {value: "", validate: RED.validators.typedInput('page-idType')},
+            "page-idType": {value: "str"},
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function(){
+            return this.name || "Notion Page"
+        },
+        color:"#C7E9C0",
+        icon: "font-awesome/fa-file",
+        oneditprepare: function(){
+
+            // Query
+
+            $("#node-input-page-id").typedInput({
+                types: ["str", "msg"],
+                typeField: "#node-input-page-idType"
+            });
+
+            switch (this.action) {
+                case "create":
+                    $("#node-input-page-action").val("create")
+                    break;
+                case "update":
+                    $("#node-input-page-action").val("update")
+                    break;
+                default:
+                    $("#node-input-page-action").val("query")
+                    break;
+            }
+
+            $("#node-input-page-action").on("change",function() {
+                switch (this.value) {
+                    case "create":
+                        $("#query-details").hide();
+                        $("#create-details").show();
+                        $("#update-details").hide();
+                        break;
+                    case "update":
+                        $("#query-details").hide();
+                        $("#create-details").hide();
+                        $("#update-details").show();
+                        break;
+                    default:
+                        $("#query-details").show();
+                        $("#create-details").hide();
+                        $("#update-details").hide();
+                        break;
+                }
+            }).trigger("change");
+        },
+        oneditsave: function() {
+            this.action = $("#node-input-page-action").val();
         }
     });
 </script>
