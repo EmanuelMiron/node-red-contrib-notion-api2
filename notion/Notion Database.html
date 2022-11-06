@@ -156,30 +156,23 @@
             }
 
             $("#node-input-database-action").on("change",function() {
+                $("#query-details").hide();
+                $("#insert-details").hide();
+                $("#update-details").hide();
+                $("#delete-details").hide();
+
                 switch (this.value) {
                     case "insert":
-                        $("#query-details").hide();
                         $("#insert-details").show();
-                        $("#update-details").hide();
-                        $("#delete-details").hide();
                         break;
                     case "update":
-                        $("#query-details").hide();
-                        $("#insert-details").hide();
                         $("#update-details").show();
-                        $("#delete-details").hide();
                         break;
                     case "delete":
-                        $("#query-details").hide();
-                        $("#insert-details").hide();
-                        $("#update-details").hide();
                         $("#delete-details").show();
                         break;
                     default:
                         $("#query-details").show();
-                        $("#insert-details").hide();
-                        $("#update-details").hide();
-                        $("#delete-details").hide();
                         break;
                 }
             }).trigger("change");
