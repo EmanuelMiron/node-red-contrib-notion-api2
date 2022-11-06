@@ -1,0 +1,76 @@
+<script type="text/html" data-template-name="Notion Block">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-solid fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-solid fa-key"></i> Token</label>
+        <input type="text" id="node-input-integrationToken" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-block-action"><i class="fa fa-list"></i> Action</label>
+        <select id="node-input-block-action" style="width:270px !important">
+            <option value="query">Query</option>
+            <option value="query-children">Query Children</option>
+            <option value="append-children">Append Children</option>
+            <option value="delete">Delete</option>
+            <option value="update">Update</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('Notion Block', {
+        category: 'Notion',
+        defaults: {
+            name: {value: ""},
+            integrationToken: {value: "", type: "Integration Token", required: true},
+            action: {value: "query", required: true}
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function(){
+            return this.name || "Notion Block"
+        },
+        color:"#AAAA66",
+        icon: "font-awesome/fa-cube",
+        oneditprepare: function(){
+
+            switch (this.action) {
+                case "query-children":
+                    $("#node-input-block-action").val("query-children")
+                    break;
+                case "append-children":
+                    $("#node-input-block-action").val("append-children")
+                    break;
+                case "delete":
+                    $("#node-input-block-action").val("delete")
+                    break;
+                case "update":
+                    $("#node-input-block-action").val("update")
+                    break;
+                default:
+                    $("#node-input-block-action").val("query")
+                    break;
+            }
+
+            $("#node-input-block-action").on("change",function() {
+                switch (this.value) {
+                    case "query-children":
+                        break;
+                    case "append-children":
+                        break;
+                    case "delete":
+                        break;
+                    case "update":
+                        break;
+                    default:
+                        break;
+                }
+            }).trigger("change");
+        },
+        oneditsave: function() {
+            this.action = $("#node-input-block-action").val();
+        }
+    });
+</script>

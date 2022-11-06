@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Integration Token', {
+        category: 'config',
+        defaults: {
+            name: {value: "", required: true}
+        },
+        credentials: {
+            integrationToken: {type: "password", required: true}
+        },
+        exportable: false,
+        label: function(){
+            return this.name;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="Integration Token">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-solid fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-integrationToken"><i class="fa fa-solid fa-bookmark"></i> Integration Token</label>
+        <input type="password" id="node-config-input-integrationToken" />
+    </div>
+</script>

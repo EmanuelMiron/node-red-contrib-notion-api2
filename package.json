@@ -2,10 +2,13 @@
     "name": "node-red-contrib-notion-api",
     "node-red": {
         "nodes": {
-            "notion": "notion-api.js"
+            "Integration Token": "./notion/Integration Token.js",
+            "Notion Database": "./notion/Notion Database.js",
+            "Notion Page": "./notion/Notion Page.js",
+            "Notion Block": "./notion/Notion Block.js"
         }
     },
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "A Node-Red Node which helps you use the Notion API without writing any code.",
     "repository": {
         "type": "git",

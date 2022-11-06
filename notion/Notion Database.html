@@ -1,8 +1,11 @@
-
 <script type="text/html" data-template-name="Notion Database">
     <div class="form-row">
-        <label for="node-input-name">Name</label>
+        <label for="node-input-name"><i class="fa fa-solid fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-solid fa-key"></i> Token</label>
+        <input type="text" id="node-input-integrationToken" />
     </div>
     <div class="form-row">
         <label for="node-input-database-action"><i class="fa fa-list"></i> Action</label>
@@ -15,19 +18,19 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-database-id">Database ID</label>
+        <label for="node-input-database-id"><i class="fa fa-solid fa-database"></i> Database ID</label>
         <input type="text" id="node-input-database-id" />
         <input type="hidden" id="node-input-database-idType">
     </div>
 
     <div class="form-row" id="query-details">
         <div class="form-row">
-            <label for="node-input-database-filter">Filter</label>
+            <label for="node-input-database-filter"><i class="fa fa-solid fa-filter"></i> Filter</label>
             <input type="text" id="node-input-database-filter" />
             <input type="hidden" id="node-input-database-filterType">
         </div>
         <div class="form-row">
-            <label for="node-input-database-sort">Sorts</label>
+            <label for="node-input-database-sort"><i class="fa fa-solid fa-sort"></i> Sort</label>
             <input type="text" id="node-input-database-sort" />
             <input type="hidden" id="node-input-database-sortType">
         </div>
@@ -35,7 +38,7 @@
 
     <div class="form-row" id="insert-details">
         <div class="form-row">
-            <label for="node-input-database-props">Properties</label>
+            <label for="node-input-database-props"><i class="fa fa-regular fa-list-ol"></i> Properties</label>
             <input type="text" id="node-input-database-props" />
             <input type="hidden" id="node-input-database-propsType">
         </div>
@@ -43,12 +46,12 @@
 
     <div class="form-row" id="update-details">
         <div class="form-row">
-            <label for="node-input-database-update-id">Item ID</label>
+            <label for="node-input-database-update-id"><i class="fa fa-solid fa-hashtag"></i> Item ID</label>
             <input type="text" id="node-input-database-update-id" />
             <input type="hidden" id="node-input-database-update-idType" />
         </div>
         <div class="form-row">
-            <label for="node-input-database-update-props">New Properties</label>
+            <label for="node-input-database-update-props"><i class="fa fa-regular fa-list-ol"></i> New Properties</label>
             <input type="text" id="node-input-database-update-props" />
             <input type="hidden" id="node-input-database-update-propsType">
         </div>
@@ -56,56 +59,10 @@
 
     <div class="form-row" id="delete-details">
         <div class="form-row">
-            <label for="node-input-database-delete-id">Item ID</label>
+            <label for="node-input-database-delete-id"><i class="fa fa-solid fa-hashtag"></i> Item ID</label>
             <input type="text" id="node-input-database-delete-id" />
             <input type="hidden" id="node-input-database-delete-idType" />
         </div>
-    </div>
-</script>
-
-<script type="text/html" data-template-name="Notion Page">
-    <div class="form-row">
-        <label for="node-input-name">Name</label>
-        <input type="text" id="node-input-name" />
-    </div>
-    <div class="form-row">
-        <label for="node-input-page-action"><i class="fa fa-list"></i> Action</label>
-        <select id="node-input-page-action" style="width:270px !important">
-            <option value="query">Query</option>
-            <option value="create">Create</option>
-            <option value="update">Update</option>
-        </select>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-page-id">Page ID</label>
-        <input type="text" id="node-input-page-id" />
-        <input type="hidden" id="node-input-page-idType">
-    </div>
-
-    <div class="form-row" id="details">
-        <div class="form-row">
-            <label for="node-input-page-props">Properties</label>
-            <input type="text" id="node-input-page-props" />
-            <input type="hidden" id="node-input-page-propsType">
-        </div>
-    </div>
-</script>
-
-<script type="text/html" data-template-name="Notion Block">
-    <div class="form-row">
-        <label for="node-input-name">Name</label>
-        <input type="text" id="node-input-name" />
-    </div>
-    <div class="form-row">
-        <label for="node-input-block-action"><i class="fa fa-list"></i> Action</label>
-        <select id="node-input-block-action" style="width:270px !important">
-            <option value="query">Query</option>
-            <option value="query-children">Query Children</option>
-            <option value="append-children">Append Children</option>
-            <option value="delete">Delete</option>
-            <option value="update">Update</option>
-        </select>
     </div>
 </script>
 
@@ -114,6 +71,7 @@
         category: 'Notion',
         defaults: {
             name: {value: ""},
+            integrationToken: {value: "", type: "Integration Token", required: true},
             action: {value: "query", required: true},
             "database-id": {value: "", validate: RED.validators.typedInput('database-idType')},
             "database-idType": {value: "str"},
@@ -123,11 +81,11 @@
             "database-sortType": {value: "json"},
             "database-props": {value: "{}", validate: RED.validators.typedInput('database-propsType')},
             "database-propsType": {value: "json"},
-            "database-update-id": {value: "", validate: RED.validators.typedInput('database-update-idType'), required: true},
+            "database-update-id": {value: "", validate: RED.validators.typedInput('database-update-idType')},
             "database-update-idType": {value: "str"},
             "database-update-props": {value: "{}", validate: RED.validators.typedInput('database-update-propsType')},
             "database-update-propsType": {value: "json"},
-            "database-delete-id": {value: "", validate: RED.validators.typedInput('database-delete-idType'), required: true},
+            "database-delete-id": {value: "", validate: RED.validators.typedInput('database-delete-idType')},
             "database-delete-idType": {value: "str"}
         },
         inputs: 1,
@@ -228,123 +186,6 @@
         },
         oneditsave: function() {
             this.action = $("#node-input-database-action").val();
-        }
-    });
-
-    RED.nodes.registerType('Notion Page', {
-        category: 'Notion',
-        defaults: {
-            name: {value: ""},
-            action: {value: "query", required: true},
-            "page-id": {value: "", validate: RED.validators.typedInput('page-idType')},
-            "page-idType": {value: "str"},
-            "page-props": {value: "{}", validate: RED.validators.typedInput('page-propsType')},
-            "page-propsType": {value: "json"}
-        },
-        inputs: 1,
-        outputs: 1,
-        label: function(){
-            return this.name || "Notion Page"
-        },
-        color:"#C7E9C0",
-        icon: "font-awesome/fa-file",
-        oneditprepare: function(){
-
-            // Query
-
-            $("#node-input-page-id").typedInput({
-                types: ["str", "msg"],
-                typeField: "#node-input-page-idType"
-            });
-
-            // Create
-
-            $("#node-input-page-props").typedInput({
-                types: ["json", "msg"],
-                typeField: "#node-input-page-propsType"
-            });
-
-            switch (this.action) {
-                case "create":
-                    $("#node-input-page-action").val("create")
-                    break;
-                case "update":
-                    $("#node-input-page-action").val("update")
-                    break;
-                default:
-                    $("#node-input-page-action").val("query")
-                    break;
-            }
-
-            $("#node-input-page-action").on("change",function() {
-                switch (this.value) {
-                    case "create":
-                        $("#details").show();
-                        break;
-                    case "update":
-                        $("#details").show();
-                        break;
-                    default:
-                        $("#details").hide();
-                        break;
-                }
-            }).trigger("change");
-        },
-        oneditsave: function() {
-            this.action = $("#node-input-page-action").val();
-        }
-    });
-    
-    RED.nodes.registerType('Notion Block', {
-        category: 'Notion',
-        defaults: {
-            name: {value: ""},
-            action: {value: "query", required: true}
-        },
-        inputs: 1,
-        outputs: 1,
-        label: function(){
-            return this.name || "Notion Block"
-        },
-        color:"##AAAA66",
-        icon: "font-awesome/fa-rectangles-mixed",
-        oneditprepare: function(){
-
-            switch (this.action) {
-                case "query-children":
-                    $("#node-input-block-action").val("query-children")
-                    break;
-                case "append-children":
-                    $("#node-input-block-action").val("append-children")
-                    break;
-                case "delete":
-                    $("#node-input-block-action").val("delete")
-                    break;
-                case "update":
-                    $("#node-input-block-action").val("update")
-                    break;
-                default:
-                    $("#node-input-block-action").val("query")
-                    break;
-            }
-
-            $("#node-input-block-action").on("change",function() {
-                switch (this.value) {
-                    case "query-children":
-                        break;
-                    case "append-children":
-                        break;
-                    case "delete":
-                        break;
-                    case "update":
-                        break;
-                    default:
-                        break;
-                }
-            }).trigger("change");
-        },
-        oneditsave: function() {
-            this.action = $("#node-input-block-action").val();
         }
     });
 </script>

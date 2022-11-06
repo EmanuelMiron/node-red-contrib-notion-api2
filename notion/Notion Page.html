@@ -1,0 +1,99 @@
+<script type="text/html" data-template-name="Notion Page">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-solid fa-tag"></i> Name</label>
+        <input type="text" placeholder="Notion Page" id="node-input-name" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-solid fa-key"></i> Token</label>
+        <input type="text" id="node-input-integrationToken" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-page-action"><i class="fa fa-list"></i> Action</label>
+        <select id="node-input-page-action" style="width:270px !important">
+            <option value="query">Query</option>
+            <option value="create">Create</option>
+            <option value="update">Update</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-page-id"><i class="fa fa-solid fa-hashtag"></i> Page ID</label>
+        <input type="text" id="node-input-page-id" />
+        <input type="hidden" id="node-input-page-idType">
+    </div>
+
+    <div class="form-row" id="details">
+        <div class="form-row">
+            <label for="node-input-page-props"><i class="fa fa-regular fa-list-ol"></i> Properties</label>
+            <input type="text" id="node-input-page-props" />
+            <input type="hidden" id="node-input-page-propsType">
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('Notion Page', {
+        category: 'Notion',
+        defaults: {
+            name: {value: ""},
+            integrationToken: {value: "", type: "Integration Token", required: true},
+            action: {value: "query", required: true},
+            "page-id": {value: "", validate: RED.validators.typedInput('page-idType')},
+            "page-idType": {value: "str"},
+            "page-props": {value: "{}", validate: RED.validators.typedInput('page-propsType')},
+            "page-propsType": {value: "json"}
+        },
+        inputs: 1,
+        outputs: 1,
+        label: function(){
+            return this.name || "Notion Page"
+        },
+        color:"#C7E9C0",
+        icon: "font-awesome/fa-file",
+        oneditprepare: function(){
+
+            // Query
+
+            $("#node-input-page-id").typedInput({
+                types: ["str", "msg"],
+                typeField: "#node-input-page-idType"
+            });
+
+            // Create
+
+            $("#node-input-page-props").typedInput({
+                types: ["json", "msg"],
+                typeField: "#node-input-page-propsType"
+            });
+
+            switch (this.action) {
+                case "create":
+                    $("#node-input-page-action").val("create")
+                    break;
+                case "update":
+                    $("#node-input-page-action").val("update")
+                    break;
+                default:
+                    $("#node-input-page-action").val("query")
+                    break;
+            }
+
+            $("#node-input-page-action").on("change",function() {
+                switch (this.value) {
+                    case "create":
+                        $("#details").show();
+                        break;
+                    case "update":
+                        $("#details").show();
+                        break;
+                    default:
+                        $("#details").hide();
+                        break;
+                }
+            }).trigger("change");
+        },
+        oneditsave: function() {
+            this.action = $("#node-input-page-action").val();
+        }
+    });
+</script>
